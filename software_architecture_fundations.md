@@ -50,13 +50,40 @@ Bottom up design (**domain driven design**)
       - UI framework
       - Cache
       - Web-server
-    - actions:
+    - **actions**:
       - messaging: simplify communication
       - caching: store data locally in memory instead in a slower and harder to access database
       - logging: track what your program does as it works
       - monitoring: observe how your program uses system resources as it works
-    - interactions:
+    - **interactions**:
       - think about how agents communicate (XML, Json, DB, etc.)
 
 research by talking to people to find the best architecture
 - try to not get locked into a vendor (e.g. only Microsoft etc.)
+
+## Design Process (In parallel)
+1. Defining problem - write down a problem statement
+   1. Describe user's problem (based on user goals)
+2. Developing the user stories
+   1. Describe the solution to the problem (user's work, not software implementation) - should be small, fix on a small sticky note
+   2. Refine the story
+      1. Slicing:
+         1. Bad way: horizontal slicing: UI, Logic, DB
+         2. Good way: **workflow isolation** - vertical slicing: smaller feature. Done by drawing the flow (activity diagram), and every `if` statement is a choice, and in it, every potential path through the process is a potential narrowing
+3. Developing the structure - **event storming** (agents of the system - classes, subsystem, micro-services, and how they talk to each other) - driven by the business people, not the developers
+   1. Decide on events (domain level, relevant to business)
+      1. e.g. comment submitted, comment added to dashboard, email sent, reply comment, delete comment
+   2. Decide on the work that happens when the event is received
+      1. e.g. store comment when it is received, send notification when added to dashboard, store reply when reply comment, delete comment when delete comment
+   3. Decide on the agent that is doing the work
+      1. e.g. storing the comment is done by the commenter, sending the notification is done by the post office, replying to the comment is done by the author, deleting the comment is done by the author
+   4. Add the bounded context to each agent:
+      1. e.g. submitting the comment is in the `submitting` context, adding to dashboard is in the `displaying` context, replying is in the `submitting` context, and deleting the comment is in the `approving` context
+
+Event map
+- start with agents
+- use strings to show interactions / communication between agents
+- gives big picture view of the design
+
+
+
