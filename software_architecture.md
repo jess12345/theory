@@ -104,3 +104,92 @@ Patterns discovered, not designed
 - similar structure, infinite number of implementations
 
 
+## Broad Architectural Patterns
+- 1 system can hold many patterns
+
+Monoliths
+- Only 1 part, software is 1 homogeneous unit
+- Strength
+  - everything in 1 place
+  - example of well structured monolith
+    - horizontal partition (DB, Business logic, UI)
+    - vertical partition (warehouse, shopping cart - bounded context)
+- Weakness
+  - hard to test and deploy
+  - hard to change
+  - hard to maintain
+  - people work around structure for convenience
+  - evil shortcuts
+
+Microkernel (plugin) architecture
+- Parts
+  - Kernel (with exposed APIs) - hold the main operations in the program
+  - Plugins (applications that work independent of each other) - hold the additional functionalities
+  - Communication between Plugins and API of the Kernel
+- Strength
+  - Easy to change the plugins
+  - Easy for the plugins to talk to the kernel
+- Weakness
+  - Hard to update the kernel - may require to update all plugins
+  - Kernel causes all the plugins to be indirectly coupled
+  - plugins can break the kernel
+
+Message-based architecture
+- Parts
+  - Job/Agent: isolations. Each has queue, a job makes a request to another job by sending a message to the receiving job's queue
+  - Message: formalisation of communication path - force system to work together
+    - happen in a shared memory, so communication is fast
+  - Common message bus
+  - adapter/broker: talk the the message bus, and the applications
+- Alternative parts:
+  - Agent
+    - publisher: sends message to the broker
+    - subscriber: receive message from broker
+- Strength
+  - ease problem with network communication
+  - isolation (easier to make changes with out worrying if it will damage something)
+  - each agent is fully isolated, and easy to change
+- Weakness
+  - communication between agents become highly complex, extremely fast, and maintaining that complexity becomes difficult
+  - can be slow
+  - messages has to be stored, and duplicated to avoid loss
+
+Microservices
+- Parts
+  - large number of individual service
+  - these systems can run in parallel
+- Requirements of each service
+  - small (a few hundred lines of code)
+  - independently deployable
+  - fully autonomous (cannot share database, resources, etc)
+  - hides implementation details
+  - distributed (may be unreliable, a call may fail at any time)
+  - highly observable (log everything they do)
+  - built around business concept (bounded context)
+- Approaches
+  - make each service a small http rest-like service (HTTP post - remote procedure call)
+    - inherently synchronous
+  - make each service communication via a message protocol
+- Strength
+  - independent services
+  - changes do not affect the rest of the system
+  - changes can occur quickly
+- Weakness
+  - Design and runtime complexity
+  - Networks are slow compared to alternatives
+- Building Microservices: Designing Fine-Grained Systems
+Book by Sam Newman
+
+Reactive and choreographed systems
+- declarative systems
+  - Shopping service asks billing to do something, asks B to do something else, and ask C to do something else.
+    - a lot of waiting
+- reactive systems
+  - Shopping service broadcasts that order had been placed. Services A, B, C decide what they want to do after they receive the broadcast
+    - decouples the system as the shopping service does not need to know what services are down stream
+  - Strength
+    - no coupling between upstream and downstream services (much easier to maintain)
+    - faster (downstream work in parallel)
+    - work in monoliths to make it easier to deploy
+
+
