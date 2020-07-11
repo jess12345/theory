@@ -85,5 +85,22 @@ Event map
 - use strings to show interactions / communication between agents
 - gives big picture view of the design
 
+## Categories of Architecture
+
+Enterprise Architecture (EA)
+- structure of business (departmental structure, communication, how things get done)
+- similar to bounded context (structure of software must reflect structure the organisation)
+- leads to 1 software system modelling the whole organisation, and extremely complex models (e.g. employee which does a large variety of tasks)
+- tries to save money through standardisation
+- small changes take large amount of time
+
+Patterns discovered, not designed
+- Buildings
+  - corner office pattern (make people like windows on 2 adjacent walls)
+  - cross ventilations pattern
+- Programmers (observe patterns when solving similar problems) - give common language
+  - Singleton (1 single instance of the object)
+  - Utility (provides functions not in the system. E.g. math functions like sin, cosine)
+- similar structure, infinite number of implementations
 
 
